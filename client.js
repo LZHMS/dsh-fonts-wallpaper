@@ -10,6 +10,8 @@ window.__ModuleLoader__.load({
     const LOCALE_NS = 'dsh-fonts-wallpaper'
     const ROUTE_CONFIG = '/api/dsh-fonts-wallpaper/config'
     const ROUTE_FONTS = '/api/dsh-fonts-wallpaper/fonts'
+    const ROUTE_PRESETS = '/api/dsh-fonts-wallpaper/presets'
+    const ROUTE_FACE = '/api/dsh-fonts-wallpaper/font-face'
     const ROUTE_PING = '/api/dsh-fonts-wallpaper/ping'
 
     const DICT = {
@@ -67,6 +69,8 @@ window.__ModuleLoader__.load({
         wallpaperTooLarge: '图片压缩后仍超过 2 MB，请换一张较小的图片。',
         wallpaperDecodeFailed: '无法读取该图片，请换一张格式正确的图片。',
         wallpaperLocal: '本地图片',
+        wallpaperPresets: '内置壁纸',
+        bundledFonts: '内置字体',
         wallpaperNote: '本地图片会压缩为最长边 2000px 的 JPEG 并随配置保存；网络地址在每次加载页面时重新获取。',
       },
       en: {
@@ -123,6 +127,8 @@ window.__ModuleLoader__.load({
         wallpaperTooLarge: 'The image is still over 2 MB after compression; choose a smaller one.',
         wallpaperDecodeFailed: 'This image could not be read; choose a valid image file.',
         wallpaperLocal: 'Local image',
+        wallpaperPresets: 'Bundled wallpapers',
+        bundledFonts: 'Bundled fonts',
         wallpaperNote: 'Local images are compressed to a JPEG with a 2000 px longest edge and stored with the config; web addresses are refetched on every page load.',
       },
     }
@@ -218,6 +224,14 @@ window.__ModuleLoader__.load({
       }
       return `${css}${scopes.join(', ')}{${d.join(';')};}\n`
     }
+
+    // --- bundled presets: mirrors presets.js. The harness compares
+    // FONT_FACE_TEMPLATE between the two halves.
+    const FONT_FACE_TEMPLATE = '@font-face{font-family:"{family}";font-style:normal;font-weight:400;font-display:swap;src:{src};}'
+    const BUNDLED_FAMILIES = ['Dsh Builtin CJK']
+    const FONT_FIELDS = ['uiLatin', 'uiCjk', 'chatLatin', 'chatCjk', 'codeLatin', 'codeCjk']
+    const usesBundledFamily = c => BUNDLED_FAMILIES.some(family =>
+      FONT_FIELDS.some(field => String(c?.[field] ?? '').includes(family)))
 
     // --- wallpaper: mirrors the host WALLPAPER_CSS so live edits need no round trip.
     const cssUrlEscape = text => String(text).replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/[\u0000-\u001f]/g, '')
@@ -331,6 +345,15 @@ body[data-ds-dark-theme] .dshf-btnPrimary:hover { background: var(--dsw-alias-bg
 .dshf-range { flex: 1 1 auto; min-width: 120px; accent-color: var(--dsw-alias-accent-1, #4f7cf7); }
 .dshf-wpMedia { display: flex; gap: 12px; align-items: center; padding: 12px 0 4px; }
 .dshf-wpThumb { flex: none; width: 132px; height: 74px; object-fit: cover; border: 0.5px solid var(--dsw-alias-border-l2); border-radius: var(--dsw-radius-sm); background: var(--dsw-alias-bg-layer-1); }
+.dshf-wpPresets { display: flex; flex-wrap: wrap; gap: 8px; }
+.dshf-wpPreset { position: relative; width: 104px; height: 60px; padding: 0; border-radius: var(--dsw-radius-sm); border: 1px solid var(--dsw-alias-border-l2); background-size: cover; background-position: center; cursor: pointer; opacity: 0.88; }
+.dshf-wpPreset:hover { opacity: 1; }
+.dshf-wpPresetOn { border-color: var(--dsw-alias-interactive-accent, #2f7fd6); box-shadow: 0 0 0 2px var(--dsw-alias-interactive-accent, #2f7fd6); opacity: 1; }
+.dshf-wpPresetName { position: absolute; right: 0; bottom: 0; left: 0; padding: 12px 6px 4px; font-size: 11px; color: #fff; text-align: left; background: linear-gradient(transparent, rgba(0, 0, 0, 0.72)); border-radius: 0 0 var(--dsw-radius-sm) var(--dsw-radius-sm); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.dshf-bundled { display: flex; flex-direction: column; gap: 8px; padding: 10px 18px 12px; border-bottom: 0.5px solid var(--dsw-alias-border-l1); }
+.dshf-bundledRow { display: flex; flex-wrap: wrap; gap: 8px; }
+.dshf-bundledBtn { display: flex; align-items: baseline; gap: 12px; padding: 6px 12px; border-radius: var(--dsw-radius-sm); border: 1px solid var(--dsw-alias-border-l2); background: var(--dsw-alias-bg-layer-1); color: inherit; cursor: pointer; }
+.dshf-bundledBtn:hover { background: var(--dsw-alias-interactive-hover, var(--dsw-alias-bg-layer-2)); }
 .dshf-wpMeta { min-width: 0; color: var(--dsw-alias-label-secondary); font-size: 12.5px; overflow-wrap: anywhere; }
 @media (max-width: 767px) {
   .dshf-content { padding-inline: 20px; }
@@ -393,7 +416,7 @@ body[data-ds-dark-theme] .dshf-btnPrimary:hover { background: var(--dsw-alias-bg
       )
     }
 
-    function FontPicker({ t, fonts, fieldLabel, onPick, onClose, onRefresh, busy, error }) {
+    function FontPicker({ t, fonts, bundled, fieldLabel, onPick, onClose, onRefresh, busy, error }) {
       const [query, setQuery] = useState('')
       const search = useRef(null)
       useEffect(() => {
@@ -428,6 +451,19 @@ body[data-ds-dark-theme] .dshf-btnPrimary:hover { background: var(--dsw-alias-bg
           h('button', { type: 'button', className: 'dshf-btn', onClick: onClose }, t('close')),
         ),
         h('div', { className: 'dshf-modalBody' },
+        bundled?.length ? h('div', { className: 'dshf-bundled' },
+          h('span', { className: 'dshf-tag' }, t('bundledFonts')),
+          h('div', { className: 'dshf-bundledRow' }, bundled.map(item => h('button', {
+            type: 'button',
+            key: item.family,
+            className: 'dshf-bundledBtn',
+            title: item.note,
+            onClick: () => onPick(item.family),
+          },
+          h('span', { className: 'dshf-fontName' }, item.label),
+          h('span', { className: 'dshf-fontSample', style: { fontFamily: quote(item.family) } }, 'Aa 永字八法 123'),
+          ))),
+        ) : null,
         h('div', { className: 'dshf-pickerHint' }, fonts === null
           ? t('pickerHint')
           : matched.length > shown.length
@@ -450,7 +486,7 @@ body[data-ds-dark-theme] .dshf-btnPrimary:hover { background: var(--dsw-alias-bg
     }
 
     function makePanel(hooks) {
-      const { t, applyCss, applyWallpaper, readConfig, writeConfig, readFonts, refreshFonts } = hooks
+      const { t, applyCss, applyWallpaper, readConfig, writeConfig, readFonts, refreshFonts, readPresets, readFace } = hooks
       return function FontPanel() {
         const [draft, setDraft] = useState(null)
         const saved = useRef(null)
@@ -461,6 +497,22 @@ body[data-ds-dark-theme] .dshf-btnPrimary:hover { background: var(--dsw-alias-bg
         const [wpFile, setWpFile] = useState(null)
         const [wpBusy, setWpBusy] = useState(false)
         const fileRef = useRef(null)
+        const [presets, setPresets] = useState(null)
+        const [faceTick, setFaceTick] = useState(0)
+        const face = useRef({ css: null, pending: null })
+        // The @font-face text carries the font subset, so it is fetched only when
+        // a field actually references a bundled family, then cached here.
+        const ensureFace = needed => {
+          if (!needed || face.current.css !== null || face.current.pending !== null) return
+          face.current.pending = readFace()
+            .then(value => { face.current.css = String(value?.css ?? ''); setFaceTick(x => x + 1) })
+            .catch(() => { face.current.pending = null })
+        }
+        const cssOf = c => `${usesBundledFamily(c) ? face.current.css ?? '' : ''}${buildCss(c)}`
+
+        useEffect(() => {
+          readPresets().then(value => setPresets(value ?? null)).catch(() => setPresets(null))
+        }, [])
 
         useEffect(() => {
           let disposed = false
@@ -484,13 +536,14 @@ body[data-ds-dark-theme] .dshf-btnPrimary:hover { background: var(--dsw-alias-bg
 
         useEffect(() => {
           if (draft === null) return
-          applyCss(buildCss(draft))
+          ensureFace(usesBundledFamily(draft))
+          applyCss(cssOf(draft))
           applyWallpaper(draft)
-        }, [draft])
+        }, [draft, faceTick])
 
         // Leaving the page discards an unsaved preview.
         useEffect(() => () => {
-          applyCss(buildCss(saved.current ?? DEFAULTS))
+          applyCss(cssOf(saved.current ?? DEFAULTS))
           applyWallpaper(saved.current ?? DEFAULTS)
         }, [])
 
@@ -661,6 +714,25 @@ body[data-ds-dark-theme] .dshf-btnPrimary:hover { background: var(--dsw-alias-bg
           ),
           ),
           ),
+          presets?.wallpapers?.length ? h('div', { className: 'dshf-row' },
+          h('div', { className: 'dshf-rowTop' },
+          h('span', { className: 'dshf-tag' }, t('wallpaperPresets')),
+          h('div', { className: 'dshf-wpPresets' }, presets.wallpapers.map(item => h('button', {
+            type: 'button',
+            key: item.id,
+            title: item.name,
+            className: `dshf-wpPreset${draft.wallpaperMode === 'file' && draft.wallpaperData === item.data ? ' dshf-wpPresetOn' : ''}`,
+            style: { backgroundImage: `url("${item.data}")` },
+            onClick: () => setDraft(current => (current === null ? current : {
+              ...current,
+              wallpaperEnabled: true,
+              wallpaperMode: 'file',
+              wallpaperUrl: '',
+              wallpaperData: item.data,
+            })),
+          }, h('span', { className: 'dshf-wpPresetName' }, item.label)))),
+          ),
+          ) : null,
           mode === 'file' ? h('div', { className: 'dshf-row' },
           h('div', { className: 'dshf-rowTop' },
           h('span', { className: 'dshf-tag' }, t('wallpaperLocal')),
@@ -721,6 +793,7 @@ body[data-ds-dark-theme] .dshf-btnPrimary:hover { background: var(--dsw-alias-bg
         picker === null ? null : h(FontPicker, {
           t,
           fonts,
+          bundled: presets?.fonts ?? null,
           busy,
           fieldLabel: picker.label,
           error: null,
@@ -850,6 +923,8 @@ body[data-ds-dark-theme] .dshf-btnPrimary:hover { background: var(--dsw-alias-bg
           writeConfig: config => apiPost(ROUTE_CONFIG, { config }),
           readFonts: () => apiGet(ROUTE_FONTS),
           refreshFonts: () => apiPost(ROUTE_FONTS, {}),
+          readPresets: () => apiGet(ROUTE_PRESETS),
+          readFace: () => apiGet(ROUTE_FACE),
         }
 
         const Panel = makePanel(hooks)

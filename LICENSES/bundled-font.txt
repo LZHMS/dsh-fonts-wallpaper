@@ -1,0 +1,23 @@
+Bundled font: subset of LXGW WenKai GB Screen (霞鹜文楷 GB 屏幕阅读版)
+
+  Upstream project : https://github.com/lxgw/LxgwWenKai-CJKVersion
+  License          : SIL Open Font License 1.1 - full text in LICENSES/OFL-1.1.txt
+  What we shipped  : WOFF2 subset built with fontTools containing the 6,768
+                     GB2312 Han characters plus Latin and punctuation
+                     (U+0020-007E, U+00A0-00FF, U+2000-206F, U+3000-303F,
+                     U+FF00-FFEF). Glyph outlines are unmodified.
+  Family name used : "Dsh Builtin CJK" - deliberately not the upstream
+                     Reserved Font Name, as required by OFL condition 3.
+                     The upstream name is only shown as a display label.
+  Fallback order   : the CSS declares src: local(<upstream names>) first and
+                     the bundled subset second, so machines that already have
+                     the full font keep using the installed copy.
+
+Notices recorded from the font file itself:
+
+[0] Copyright 2021-2024 LXGW (https://github.com/lxgw/LxgwWenKai-Screen)
+Copyright 2020 The Klee Project Authors (https://github.com/fontworks-fonts/Klee)
+[8] LXGW / Fontworks Inc.
+[11] https://github.com/lxgw
+[13] This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL
+[14] https://scripts.sil.org/OFL

@@ -17,6 +17,17 @@
 | 🔤 **分区字体** | 界面、对话、代码三组，各设西文 + 中文字体，带实时预览 | Interface / conversation / code, each with its own Latin + CJK face and a live preview |
 | 📋 **本机字体表** | 读取系统注册表与字体目录，1,200+ 字体可选，支持搜索 | Built from the Windows font registry and font folders — 1,200+ faces, searchable |
 
+## 📦 内置预设 Built-in presets
+
+新设备上没有装字体、也没有壁纸时，面板里直接有可选项：
+
+| 预设 | 内容 |
+|---|---|
+| **内置字体** `Dsh Builtin CJK` | 霞鹜文楷 GB 屏幕阅读版的常用字子集（GB2312 全部 6768 字 + 拉丁与标点，WOFF2 约 1.8 MB，SIL OFL 1.1）。字体选择器顶部一键选用 |
+| **内置壁纸** | 3 张精选壁纸（1600px JPEG），壁纸卡片里点缩略图即用 |
+
+字体的 `@font-face` 声明是 `src: local("霞鹜文楷 GB 屏幕阅读版"), local("LXGW WenKai GB Screen"), url(<内置子集>)`——**本机装了完整字体就继续用本机版**，没装才用内置子集；`@font-face` 只在该字段真的引用内置族时才注入，字体字节不会无谓传输。子集构建脚本与许可全文见 `LICENSES/`。
+
 ## 🔤 字体 Font panels
 
 界面、对话、代码三组各有一行西文、一行中文，每一行下面都是该字体的真实预览 `永字八法 ABCDEFG abcdefg 0123456789`。

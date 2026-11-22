@@ -4,11 +4,14 @@ import {
   CONFIG_FIELDS, DEFAULTS, buildFontCss, buildWallpaperCss, listInstalledFonts,
   normalizeConfig, unwrapConfig, bootStyleTag, wallpaperStyleTag,
 } from './fonts.js'
+import { presetPayload, allBundledFontFaceCss } from './presets.js'
 
 const ROUTE_CONFIG = '/api/dsh-fonts-wallpaper/config'
 const ROUTE_FONTS = '/api/dsh-fonts-wallpaper/fonts'
+const ROUTE_PRESETS = '/api/dsh-fonts-wallpaper/presets'
+const ROUTE_FACE = '/api/dsh-fonts-wallpaper/font-face'
 const ROUTE_PING = '/api/dsh-fonts-wallpaper/ping'
-const PLUGIN_VERSION = '1.1.0'
+const PLUGIN_VERSION = '1.2.0'
 
 /** `.volatile()` exists on DSH ≥ 0.1.7 schemastery; plain fields still work. */
 function live(field) {
@@ -109,7 +112,7 @@ export function apply(ctx, config) {
         plugin: '@local/dsh-fonts-wallpaper',
         version: PLUGIN_VERSION,
         platform: process.platform,
-        routes: [ROUTE_CONFIG, ROUTE_FONTS],
+        routes: [ROUTE_CONFIG, ROUTE_FONTS, ROUTE_PRESETS],
         fonts: lastFontCount,
       })
     },
@@ -167,6 +170,42 @@ export function apply(ctx, config) {
       sendJson(res, 200, { ok: true, config: merged, css: buildFontCss(merged) })
     },
   }), `dsh-fonts-wallpaper: ${ROUTE_CONFIG}`)
+
+  // Bundled presets: the panel shows these so a fresh machine can pick a nice
+  // font and wallpaper without installing anything. Wallpaper bytes ride along
+  // as data URLs; font bytes stay on disk until a rule actually needs them.
+  let presets = null
+  ctx.effect(() => web.register({
+    kind: 'exact',
+    path: ROUTE_PRESETS,
+    handler: async (req, res) => {
+      if (rejected(req, res)) return
+      if (req.method !== 'GET') {
+        sendJson(res, 405, { ok: false, code: 'method-not-allowed', message: 'GET only' })
+        return
+      }
+      if (presets === null) presets = presetPayload()
+      sendJson(res, 200, presets)
+    },
+  }), `dsh-fonts-wallpaper: GET ${ROUTE_PRESETS}`)
+
+  // The @font-face text for bundled families. The client fetches it only once a
+  // field actually references one, so the (large) font bytes never travel unless
+  // they are used. `src: local(...)` first keeps installed copies in charge.
+  let faceCss = null
+  ctx.effect(() => web.register({
+    kind: 'exact',
+    path: ROUTE_FACE,
+    handler: async (req, res) => {
+      if (rejected(req, res)) return
+      if (req.method !== 'GET') {
+        sendJson(res, 405, { ok: false, code: 'method-not-allowed', message: 'GET only' })
+        return
+      }
+      if (faceCss === null) faceCss = allBundledFontFaceCss()
+      sendJson(res, 200, { ok: true, css: faceCss })
+    },
+  }), `dsh-fonts-wallpaper: GET ${ROUTE_FACE}`)
 
   ctx.effect(() => web.register({
     kind: 'exact',

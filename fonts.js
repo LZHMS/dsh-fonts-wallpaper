@@ -3,6 +3,7 @@ import { execFile } from 'node:child_process'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
+import { bundledFontFaceCss } from './presets.js'
 
 /** CSS generic families: quoted names would break generic matching. */
 const GENERIC_FAMILIES = new Set([
@@ -120,6 +121,9 @@ export function fontStack(latin, cjk) {
 export function buildFontCss(config) {
   const c = normalizeConfig(config)
   if (c.enabled === false) return ''
+  // Bundled families are shipped inside the plugin, so they resolve on machines
+  // that never installed the font. Only referenced families emit a rule.
+  const faces = bundledFontFaceCss(c)
   const ui = fontStack(c.uiLatin, c.uiCjk)
   const chat = fontStack(c.chatLatin, c.chatCjk)
   const code = fontStack(c.codeLatin, c.codeCjk)
@@ -130,7 +134,7 @@ export function buildFontCss(config) {
   if (code && c.terminalFollowCode) bodyRules.push(`--dsh-font-family-terminal: ${code} !important`)
   if (ui && c.brandFollowUi) bodyRules.push(`--dsw-font-family-brand: ${ui} !important`)
 
-  let css = bodyRules.length > 0 ? `body{${bodyRules.join(';')};}\n` : ''
+  let css = `${faces}${bodyRules.length > 0 ? `body{${bodyRules.join(';')};}\n` : ''}`
   if (!chat) return css
 
   // Conversation scope: the markdown token ladder is computed on body, so a
