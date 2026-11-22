@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Fonts and wallpaper",
+    "detail": "docs/DETAIL.md",
+    "description": "Custom fonts and a global wallpaper for DeepSeek Harness: set the Latin and CJK fonts of the interface, the conversation and code independently (picked from the fonts installed on this machine — Windows registry font tables plus the font folders), plus a global wallpaper (local image or web address, adjustable opacity). Open the Fonts & wallpaper entry in the left sidebar: every field has a live preview, and Save writes the choice into this profile. Conversation and code fonts only override the matching text roles; while the plugin is enabled the font fields in Settings → General → Fonts are overridden, font sizes still apply. Turning the plugin off restores the built-in stacks. The font list reads the machine's font registry keys and font directories only; local wallpaper images are compressed and stored with the config on this machine; nothing is sent elsewhere."
+  }
+}

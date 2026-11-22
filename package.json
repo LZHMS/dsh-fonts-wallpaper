@@ -1,0 +1,51 @@
+{
+  "name": "@local/dsh-fonts-wallpaper",
+  "version": "1.1.0",
+  "type": "module",
+  "description": "自定义 DSH 字体：界面、对话、代码分别设置，中西文分开，可选本机已安装字体；支持全局壁纸（本地图片/网络地址，可调不透明度）。",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LZHMS/dsh-fonts-wallpaper.git"
+  },
+  "homepage": "https://github.com/LZHMS/dsh-fonts-wallpaper#readme",
+  "bugs": "https://github.com/LZHMS/dsh-fonts-wallpaper/issues",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "dsh-bundle",
+    "fonts",
+    "wallpaper"
+  ],
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "fonts.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "docs"
+  ],
+  "peerDependencies": {
+    "@deepseek-ai/schemastery": "*"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-theme",
+        "@deepseek-ai/dsh-client-ui-layout"
+      ]
+    }
+  }
+}
