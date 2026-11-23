@@ -1,6 +1,6 @@
 {
   "name": "@zhaulee/dsh-fonts-wallpaper",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "type": "module",
   "description": "自定义 DSH 字体：界面、对话、代码分别设置，中西文分开，可选本机已安装字体；支持全局壁纸（本地图片/网络地址，可调不透明度）。",
   "license": "MIT",
