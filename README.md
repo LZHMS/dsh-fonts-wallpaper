@@ -49,7 +49,7 @@
 ## 🚀 安装 Install
 
 1. 在本仓库的 **Releases** 下载 `local-dsh-fonts-wallpaper-<version>.tgz`（也可在仓库目录执行 `npm pack` 自行打包），然后在 DSH 桌面端打开 **插件管理 → 添加插件**，选择该文件。
-   <sub>包名以 `@local/` 作用域开头，未发布到 npmjs，请直接从本仓库安装。</sub>
+   <sub>npm 包：<code>@zhaulee/dsh-fonts-wallpaper</code>；也可从本仓库源码直接安装。</sub>
 2. 安装后**完整退出并重启应用**（字体与壁纸文案在启动时读取）。
 3. 左侧边栏出现 **「字体与壁纸」** 入口，打开即可上传本地图片、粘贴图片地址、调节不透明度。
 
