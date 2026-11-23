@@ -1,4 +1,4 @@
 - insert:
     - id: dsh-fonts-wallpaper
-      name: '@local/dsh-fonts-wallpaper'
+      name: '@zhaulee/dsh-fonts-wallpaper'
       config: {}

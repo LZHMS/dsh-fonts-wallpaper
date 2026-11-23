@@ -1,4 +1,4 @@
-// @local/dsh-fonts-wallpaper — Host half: config schema, persistence, local font list route.
+// @zhaulee/dsh-fonts-wallpaper — Host half: config schema, persistence, local font list route.
 import Schema from '@deepseek-ai/schemastery'
 import {
   CONFIG_FIELDS, DEFAULTS, buildFontCss, buildWallpaperCss, listInstalledFonts,
@@ -109,7 +109,7 @@ export function apply(ctx, config) {
       }
       sendJson(res, 200, {
         ok: true,
-        plugin: '@local/dsh-fonts-wallpaper',
+        plugin: '@zhaulee/dsh-fonts-wallpaper',
         version: PLUGIN_VERSION,
         platform: process.platform,
         routes: [ROUTE_CONFIG, ROUTE_FONTS, ROUTE_PRESETS],

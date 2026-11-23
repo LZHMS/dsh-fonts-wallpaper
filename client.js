@@ -1,6 +1,6 @@
-// @local/dsh-fonts-wallpaper — Client half: font panel, sidebar entry, live stylesheet.
+// @zhaulee/dsh-fonts-wallpaper — Client half: font panel, sidebar entry, live stylesheet.
 window.__ModuleLoader__.load({
-  id: '@local/dsh-fonts-wallpaper',
+  id: '@zhaulee/dsh-fonts-wallpaper',
   factory(require) {
     const React = require('react')
     const h = React.createElement
