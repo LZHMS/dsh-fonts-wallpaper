@@ -1,69 +1,72 @@
 # dsh-fonts-wallpaper
 
-**自定义字体 · 全局壁纸** — Custom fonts & a global wallpaper for DeepSeek Harness.
+**Custom fonts & a global wallpaper for DeepSeek Harness.**
 
-一张图片垫在整个应用界面之后，侧栏、会话、代码块都透出壁纸的颜色；同时可以为界面、对话、代码分别指定西文与中文字体。
+One image sits behind the entire app — sidebar, conversation and preview panes all take on its colors — while interface, conversation and code fonts can each be set separately, Latin and CJK apart.
 
-<img src="docs/hero.jpg" alt="启用全局壁纸后的应用界面：左侧导航、中间会话、右侧字体与壁纸面板，背景是一张壁纸" width="1280" />
+![The app with a global wallpaper: left navigation, conversation and the fonts & wallpaper panel over the wallpaper](docs/hero.jpg)
 
 ---
 
-## ✨ 功能 Features
+## ✨ Features
 
-| | 说明 | Description |
-|---|---|---|
-| 🖼 **全局壁纸** | 本地图片或网络地址，铺在整个应用界面之后（侧栏、会话、文件预览块全部生效） | A local image or a URL, fixed behind the whole app — sidebar, conversation and preview panes included |
-| 🎚 **不透明度** | 滑块实时调节，一键启用 / 停用 | A live opacity slider with a one-click enable toggle |
-| 🔤 **分区字体** | 界面、对话、代码三组，各设西文 + 中文字体，带实时预览 | Interface / conversation / code, each with its own Latin + CJK face and a live preview |
-| 📋 **本机字体表** | 读取系统注册表与字体目录，1,200+ 字体可选，支持搜索 | Built from the Windows font registry and font folders — 1,200+ faces, searchable |
-
-## 📦 内置预设 Built-in presets
-
-新设备上没有装字体、也没有壁纸时，面板里直接有可选项：
-
-| 预设 | 内容 |
+| | |
 |---|---|
-| **内置字体** `Dsh Builtin CJK` | 霞鹜文楷 GB 屏幕阅读版的常用字子集（GB2312 全部 6768 字 + 拉丁与标点，WOFF2 约 1.8 MB，SIL OFL 1.1）。字体选择器顶部一键选用 |
-| **内置壁纸** | 3 张精选壁纸（1600px JPEG），壁纸卡片里点缩略图即用 |
+| 🖼 **Global wallpaper** | A local image or a URL, fixed behind the whole app — sidebar, conversation and preview panes included |
+| 🎚 **Opacity** | A live opacity slider with a one-click enable/disable toggle |
+| 🔤 **Per-area fonts** | Interface / conversation / code, each with its own Latin + CJK face and a live preview of each line |
+| 📋 **Local font list** | Built from the Windows font registry and font folders — 1,200+ faces, searchable |
 
-字体的 `@font-face` 声明是 `src: local("霞鹜文楷 GB 屏幕阅读版"), local("LXGW WenKai GB Screen"), url(<内置子集>)`——**本机装了完整字体就继续用本机版**，没装才用内置子集；`@font-face` 只在该字段真的引用内置族时才注入，字体字节不会无谓传输。子集构建脚本与许可全文见 `LICENSES/`。
+## 📦 Built-in presets
 
-## 🔤 字体 Font panels
+On a fresh machine without installed fonts or wallpapers, the panel already has options to pick:
 
-界面、对话、代码三组各有一行西文、一行中文，每一行下面都是该字体的真实预览 `永字八法 ABCDEFG abcdefg 0123456789`。
+- **Bundled font** `Dsh Builtin CJK` — a reading subset of LXGW WenKai GB Screen (all 6,768 GB2312 ideographs plus Latin and punctuation, ~1.8 MB WOFF2, SIL OFL 1.1), selectable at the top of the font picker.
+- **Bundled wallpapers** — three curated 1600px JPEGs, picked straight from the wallpaper cards.
 
-<img src="docs/fonts.jpg" alt="字体与壁纸面板：三组字体卡片，西文与中文字体选择框，以及每行的预览效果" width="1100" />
+The font's `@font-face` declares `src: local("霞鹜文楷 GB 屏幕阅读版"), local("LXGW WenKai GB Screen"), url(<bundled subset>)` — **machines that have the full font keep using it**; only they don't does the bundled subset apply. The `@font-face` is injected only when the setting actually references the bundled family, so the font bytes never travel needlessly. Subset build scripts and full license texts live in `LICENSES/`.
 
-## 🎨 壁纸示例 Wallpapers
+## 🔤 Font panels
 
-本机 9 张壁纸（`jpg` / `webp` 均可）都可以作为全局壁纸：
+Interface, conversation and code each get one row for Latin and one for CJK, and every row shows a real preview in that face: `永字八法 ABCDEFG abcdefg 0123456789`.
 
-<img src="docs/gallery.jpg" alt="9 张壁纸缩略图，3 行 3 列方格展示" width="1272" />
+![The fonts & wallpaper panel: three font cards, Latin and CJK pickers, and a live preview per row](docs/fonts.jpg)
 
-同一张壁纸垫在界面之后、不同不透明度下的观感：
+## 🎨 Wallpaper gallery
 
-<img src="docs/gallery-mock.jpg" alt="9 张壁纸在应用界面中的效果，3 行 3 列方格展示，标注不透明度" width="1272" />
+Nine local wallpapers (`jpg` / `webp`) shown as the global wallpaper:
 
-<sub>示例壁纸为个人收藏图片，仅用于演示效果。</sub>
+![Nine wallpaper thumbnails in a 3×3 grid](docs/gallery.jpg)
 
-## 🚀 安装 Install
+The same wallpapers behind the app UI at different opacity levels:
 
-1. 在本仓库的 **Releases** 下载 `local-dsh-fonts-wallpaper-<version>.tgz`（也可在仓库目录执行 `npm pack` 自行打包），然后在 DSH 桌面端打开 **插件管理 → 添加插件**，选择该文件。
-   <sub>npm 包：<code>@zhaulee/dsh-fonts-wallpaper</code>；也可从本仓库源码直接安装。</sub>
-2. 安装后**完整退出并重启应用**（字体与壁纸文案在启动时读取）。
-3. 左侧边栏出现 **「字体与壁纸」** 入口，打开即可上传本地图片、粘贴图片地址、调节不透明度。
+![The same nine wallpapers composited into the app UI, each labeled with its opacity](docs/gallery-mock.jpg)
 
-## 🧭 使用 Usage
+<sub>Sample wallpapers are personal images shown for demonstration only.</sub>
 
-- **全局壁纸**：选择「本地图片」（自动压缩为最长边 2000px 的 JPEG 后随配置保存在本机）或「网络地址」（每次加载页面时重新获取）；「移除壁纸」恢复默认背景。
-- **字体**：「界面字体」影响标题、按钮与侧栏；「对话字体」影响消息气泡与输入框；「代码字体」影响代码块与终端。勾选「跟随」可与品牌字标、输入框、终端联动。
+## 🚀 Install
 
-## 🔒 隐私与覆盖 Privacy
+Install from npm:
 
-- 字体列表只读取本机字体注册表键与字体目录，不做任何网络请求。
-- 本地壁纸经压缩后与插件配置一同保存在本机（profile 的 `cordis.patch.yml`）；网络壁纸只保存 URL。**不向外部发送任何数据。**
-- 启用后，**设置 → 通用 → 字体** 中的字体字段会被本插件覆盖（字号仍生效）；停用插件即恢复内置字体栈。
+```
+@zhaulee/dsh-fonts-wallpaper
+```
 
-## 📄 许可 License
+or install from this repository (source or a `npm pack` tarball attached to Releases) through **Plugin Manager → Add plugin** in DSH Desktop.
 
-[MIT](LICENSE) © 2026 ZHaoLi
+After installing, **fully quit and restart the app** (font and wallpaper strings load at startup). A **“Fonts & wallpaper”** entry appears in the left sidebar: upload a local image, paste an image URL, or drag the opacity slider.
+
+## 🧭 Usage
+
+- **Global wallpaper**: choose “Local image” (compressed to a ≤2000px-edge JPEG and stored with the plugin config on this machine) or “URL” (re-fetched when the page loads); “Remove wallpaper” restores the default background.
+- **Fonts**: “Interface font” affects titles, buttons and the sidebar; “Conversation font” affects message bubbles and the composer; “Code font” affects code blocks and the terminal. The “Follow” checkboxes tie in the brand mark, input box and terminal.
+
+## 🔒 Privacy
+
+- The font list only reads local font registry keys and font folders — no network requests.
+- A local wallpaper is compressed and stored on this machine together with the plugin config (the profile's `cordis.patch.yml`); a URL wallpaper stores only the URL. **Nothing is sent anywhere.**
+- While enabled, the font fields in **Settings → General → Fonts** are overridden by this plugin (font sizes still apply); disabling the plugin restores the built-in font stack.
+
+## 📄 License
+
+[MIT](LICENSE) © 2026 ZHaoLi. Bundled font: LXGW WenKai GB Screen subset, SIL OFL 1.1 (see `LICENSES/`).
