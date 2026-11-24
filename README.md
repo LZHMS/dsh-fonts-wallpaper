@@ -38,6 +38,10 @@ Wallpapers can be any local image or URL; the whole UI stays tinted-through at a
 
 ![Wallpapers behind the app at different opacities, with the three bundled gradient presets](docs/gallery.svg)
 
+The three bundled presets composited behind the app UI at different overlay opacities:
+
+![The three preset wallpapers behind a mock app UI at 25% / 50% / 75% overlay](docs/gallery-mock.svg)
+
 <sub>The three preset wallpapers ship with the plugin; the figure above is an abstract illustration of how wallpapers (bundled or your own) sit behind the UI at any opacity.</sub>
 
 ## 🚀 Install
