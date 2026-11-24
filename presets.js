@@ -26,9 +26,9 @@ export const BUNDLED_FONTS = [
 ]
 
 export const BUNDLED_WALLPAPERS = [
-  { id: 'preset-1', name: 'frieren-cherry-blossom.jpg', label: 'frieren-cherry-blossom', file: path.join('assets', 'wallpapers', 'frieren-cherry-blossom.jpg') },
-  { id: 'preset-2', name: 'kimono-girl-lantern-night.jpg', label: 'kimono-girl-lantern-night', file: path.join('assets', 'wallpapers', 'kimono-girl-lantern-night.jpg') },
-  { id: 'preset-3', name: 'mecha-girl-space.jpg', label: 'mecha-girl-space', file: path.join('assets', 'wallpapers', 'mecha-girl-space.jpg') },
+  { id: 'preset-1', name: 'aurora-veil.png', label: 'aurora-veil', file: path.join('assets', 'wallpapers', 'aurora-veil.png') },
+  { id: 'preset-2', name: 'dusk-tide.png', label: 'dusk-tide', file: path.join('assets', 'wallpapers', 'dusk-tide.png') },
+  { id: 'preset-3', name: 'mint-bloom.png', label: 'mint-bloom', file: path.join('assets', 'wallpapers', 'mint-bloom.png') },
 ]
 
 const MIME = { '.woff2': 'font/woff2', '.jpg': 'image/jpeg', '.png': 'image/png' }

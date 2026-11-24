@@ -4,7 +4,7 @@
 
 One image sits behind the entire app — sidebar, conversation and preview panes all take on its colors — while interface, conversation and code fonts can each be set separately, Latin and CJK apart.
 
-![The app with a global wallpaper: left navigation, conversation and the fonts & wallpaper panel over the wallpaper](docs/hero.jpg)
+![The app with a global wallpaper: left navigation, conversation and the fonts & wallpaper panel over the wallpaper](docs/hero.svg)
 
 ---
 
@@ -22,7 +22,7 @@ One image sits behind the entire app — sidebar, conversation and preview panes
 On a fresh machine without installed fonts or wallpapers, the panel already has options to pick:
 
 - **Bundled font** `Dsh Builtin CJK` — a reading subset of LXGW WenKai GB Screen (all 6,768 GB2312 ideographs plus Latin and punctuation, ~1.8 MB WOFF2, SIL OFL 1.1), selectable at the top of the font picker.
-- **Bundled wallpapers** — three curated 1600px JPEGs, picked straight from the wallpaper cards.
+- **Bundled wallpapers** — three generated abstract gradients (`aurora-veil`, `dusk-tide`, `mint-bloom`), picked straight from the wallpaper cards.
 
 The font's `@font-face` declares `src: local("霞鹜文楷 GB 屏幕阅读版"), local("LXGW WenKai GB Screen"), url(<bundled subset>)` — **machines that have the full font keep using it**; only they don't does the bundled subset apply. The `@font-face` is injected only when the setting actually references the bundled family, so the font bytes never travel needlessly. Subset build scripts and full license texts live in `LICENSES/`.
 
@@ -30,19 +30,15 @@ The font's `@font-face` declares `src: local("霞鹜文楷 GB 屏幕阅读版"),
 
 Interface, conversation and code each get one row for Latin and one for CJK, and every row shows a real preview in that face: `永字八法 ABCDEFG abcdefg 0123456789`.
 
-![The fonts & wallpaper panel: three font cards, Latin and CJK pickers, and a live preview per row](docs/fonts.jpg)
+![The fonts & wallpaper panel: three font cards, Latin and CJK pickers, and a live preview per row](docs/fonts.svg)
 
 ## 🎨 Wallpaper gallery
 
-Nine local wallpapers (`jpg` / `webp`) shown as the global wallpaper:
+Wallpapers can be any local image or URL; the whole UI stays tinted-through at any opacity:
 
-![Nine wallpaper thumbnails in a 3×3 grid](docs/gallery.jpg)
+![Wallpapers behind the app at different opacities, with the three bundled gradient presets](docs/gallery.svg)
 
-The same wallpapers behind the app UI at different opacity levels:
-
-![The same nine wallpapers composited into the app UI, each labeled with its opacity](docs/gallery-mock.jpg)
-
-<sub>Sample wallpapers are personal images shown for demonstration only.</sub>
+<sub>The three preset wallpapers (`aurora-veil`, `dusk-tide`, `mint-bloom`) are generated abstract gradients bundled with the plugin; the other tiles illustrate how any of your own images behave.</sub>
 
 ## 🚀 Install
 
