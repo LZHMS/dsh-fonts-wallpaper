@@ -22,7 +22,7 @@ One image sits behind the entire app — sidebar, conversation and preview panes
 On a fresh machine without installed fonts or wallpapers, the panel already has options to pick:
 
 - **Bundled font** `Dsh Builtin CJK` — a reading subset of LXGW WenKai GB Screen (all 6,768 GB2312 ideographs plus Latin and punctuation, ~1.8 MB WOFF2, SIL OFL 1.1), selectable at the top of the font picker.
-- **Bundled wallpapers** — three generated abstract gradients (`aurora-veil`, `dusk-tide`, `mint-bloom`), picked straight from the wallpaper cards.
+- **Bundled wallpapers** — three curated wallpapers, picked straight from the wallpaper cards.
 
 The font's `@font-face` declares `src: local("霞鹜文楷 GB 屏幕阅读版"), local("LXGW WenKai GB Screen"), url(<bundled subset>)` — **machines that have the full font keep using it**; only they don't does the bundled subset apply. The `@font-face` is injected only when the setting actually references the bundled family, so the font bytes never travel needlessly. Subset build scripts and full license texts live in `LICENSES/`.
 
@@ -38,7 +38,7 @@ Wallpapers can be any local image or URL; the whole UI stays tinted-through at a
 
 ![Wallpapers behind the app at different opacities, with the three bundled gradient presets](docs/gallery.svg)
 
-<sub>The three preset wallpapers (`aurora-veil`, `dusk-tide`, `mint-bloom`) are generated abstract gradients bundled with the plugin; the other tiles illustrate how any of your own images behave.</sub>
+<sub>The three preset wallpapers ship with the plugin; the figure above is an abstract illustration of how wallpapers (bundled or your own) sit behind the UI at any opacity.</sub>
 
 ## 🚀 Install
 
